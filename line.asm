@@ -242,14 +242,14 @@ line0           rts
 ;/ 6|5 \
 ;
 line1           lda     dy
-                tay                 ; y = dy + 1, a = dy / 2
+                tay                 ; y = dy + 1
                 iny
-                shr
+                shr                 ; a = dy / 2
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
-                bcs     +
-                cmp     dy          ; if a >= dy then
+                bcs     +           ; if a >= dy then
+                cmp     dy          ;
                 bcc     ++          ;   a = a - dy
 +               sec                 ;   cx--
                 sbc     dy
@@ -269,14 +269,14 @@ line1           lda     dy
 ;/ 6|5 \
 ;
 line2           lda     dy
-                tay                 ; y = dy + 1, a = dy / 2
+                tay                 ; y = dy + 1
                 iny
-                shr
+                shr                 ; a = dy / 2
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
-                bcs     +
-                cmp     dy          ; if a >= dy then
+                bcs     +           ; if a >= dy then
+                cmp     dy          ; 
                 bcc     ++          ;   a = a - dy
 +               sec                 ;   cx++
                 sbc     dy
@@ -296,14 +296,14 @@ line2           lda     dy
 ;/ 6|5 \
 ;
 line3           lda     dx
-                tax                 ; x = dx + 1, a = dx / 2
+                tax                 ; x = dx + 1
                 inx
-                shr
+                shr                 ; a = dx / 2
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
-                bcs     +
-                cmp     dx          ; if a >= dx then
+                bcs     +           ; if a >= dx then
+                cmp     dx          ; 
                 bcc     ++          ;   a = a - dx
 +               sec                 ;   cy--
                 sbc     dx
@@ -323,14 +323,14 @@ line3           lda     dx
 ;/ 6|5 \
 ;
 line4           lda     dx
-                tax                 ; x = dx + 1, a = dx / 2
+                tax                 ; x = dx + 1
                 inx
-                shr
+                shr                 ; a = dx / 2
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
-                bcs     +
-                cmp     dx          ; if a >= dx then
+                bcs     +           ; if a >= dx then
+                cmp     dx          ; 
                 bcc     ++          ;   a = a - dx
 +               sec                 ;   cy++
                 sbc     dx
@@ -350,14 +350,14 @@ line4           lda     dx
 ;/ 6|5 \
 ;
 line5           lda     dy
-                tay                 ; y = dy + 1, a = dy / 2
+                tay                 ; y = dy + 1
                 iny
-                shr
+                shr                 ; a = dy / 2
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
-                bcs     +
-                cmp     dy          ; if a >= dy then
+                bcs     +           ; if a >= dy then
+                cmp     dy          ;
                 bcc     ++          ;   a = a - dy
 +               sec                 ;   cx++
                 sbc     dy
@@ -366,7 +366,6 @@ line5           lda     dy
                 dey
                 bne     -
                 rts
-
 
 ;
 ;\ 1|2 /
@@ -378,14 +377,14 @@ line5           lda     dy
 ;/ 6|5 \
 ;
 line6           lda     dy
-                tay                 ; y = dy + 1, a = dy / 2
+                tay                 ; y = dy + 1
                 iny
-                shr
+                shr                 ; a = dy / 2
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
-                bcs     +
-                cmp     dy          ; if a >= dy then
+                bcs     +           ; if a >= dy then
+                cmp     dy          ;
                 bcc     ++          ;   a = a - dy
 +               sec                 ;   cx--
                 sbc     dy
@@ -405,14 +404,14 @@ line6           lda     dy
 ;/ 6|5 \
 ;
 line7           lda     dx
-                tax                 ; x = dx + 1, a = dx / 2
+                tax                 ; x = dx + 1
                 inx
-                shr
+                shr                 ; a = dx / 2
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
-                bcs     +
-                cmp     dx          ; if a >= dx then
+                bcs     +           ; if a >= dx then
+                cmp     dx          ;
                 bcc     ++          ;   a = a - dx
 +               sec                 ;   cy++
                 sbc     dx
@@ -432,14 +431,14 @@ line7           lda     dx
 ;/ 6|5 \
 ;
 line8           lda     dx
-                tax                 ; x = dx + 1, a = dx / 2
+                tax                 ; x = dx + 1
                 inx
-                shr
+                shr                 ; a = dx / 2
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
-                bcs     +
-                cmp     dx          ; if a >= dx then
+                bcs     +           ; if a >= dx then
+                cmp     dx          ;
                 bcc     ++          ;   a = a - dx
 +               sec                 ;   cy--
                 sbc     dx
