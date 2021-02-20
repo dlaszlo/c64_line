@@ -11,7 +11,7 @@ all: $(PROGRAM).prg
 	$(VICE) $<
 
 $(PROGRAM).prg: $(PROGRAM).tmp
-	$(BYTEBOOZER2) -c 1000 $<
+	$(BYTEBOOZER2) -c 4000 $<
 	$(CP) $<.b2 $@
 
 $(PROGRAM).tmp: $(PROGRAM).asm

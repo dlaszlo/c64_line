@@ -20,33 +20,96 @@ COLOR1            = WHITE
 COLOR2            = LIGHT_BLUE
 COLOR3            = BLUE
 
-*               = $1000
+*               = $4000
 
                 jsr     init_vic
 
-                ldx     #127
+loop
+                jsr     clearscreen
+
+                ldx     #0
                 stx     x0
                 ldy     #0
                 sty     y0
+                ldx     #0
+                stx     x1
+                ldy     #199
+                sty     y1
+                .for i := 0, i < 160, i += 1
+                jsr     line
+                inc     x1
+                .next
+                dec     x1
+                .for i := 0, i < 200, i += 1
+                jsr     line
+                dec     y1
+                .next
+                inc     y1
 
+                jsr     clearscreen
+
+                ldx     #0
+                stx     x0
+                ldy     #199
+                sty     y0
                 ldx     #0
                 stx     x1
                 ldy     #0
                 sty     y1
-
-                .for i := 0, i < 128, i += 1
-                jsr     line   
+                .for i := 0, i < 160, i += 1
+                jsr     line
+                inc     x1
+                .next
+                dec     x1
+                .for i := 0, i < 200, i += 1
+                jsr     line
                 inc     y1
                 .next
                 dec     y1
 
-                .for i := 0, i < 128, i += 1
-                jsr     line   
+                jsr     clearscreen
+
+                ldx     #159
+                stx     x0
+                ldy     #199
+                sty     y0
+                ldx     #0
+                stx     x1
+                ldy     #199
+                sty     y1
+                .for i := 0, i < 200, i += 1
+                jsr     line
+                dec     y1
+                .next
+                inc     y1
+                .for i := 0, i < 160, i += 1
+                jsr     line
                 inc     x1
                 .next
                 dec     x1
 
-                jmp     *
+                jsr     clearscreen
+
+                ldx     #159
+                stx     x0
+                ldy     #0
+                sty     y0
+                ldx     #0
+                stx     x1
+                ldy     #0
+                sty     y1
+                .for i := 0, i < 200, i += 1
+                jsr     line
+                inc     y1
+                .next
+                dec     y1
+                .for i := 0, i < 160, i += 1
+                jsr     line
+                inc     x1
+                .next
+                dec     x1
+
+                jmp     loop
 
 
 ; ===========================
@@ -123,7 +186,7 @@ line            lda     #$00
                 lda     x1          ; a = x1 - x0
                 sec
                 sbc     x0
-                bpl     +           ; a = abs(a)
+                bcs     +           ; a = abs(a)
                 eor     #$ff        
                 clc
                 adc     #$00
@@ -133,7 +196,7 @@ line            lda     #$00
                 lda     y1          ; a = y1 - y0
                 sec
                 sbc     y0
-                bpl     +           ; a = abs(a)
+                bcs     +           ; a = abs(a)
                 eor     #$ff
                 clc
                 adc     #$00
@@ -143,7 +206,7 @@ line            lda     #$00
 
                 lda     dx
                 cmp     dy
-                bpl     +
+                bcs     +
                 lda     #$4
                 ora     lineptr
                 sta     lineptr
@@ -185,9 +248,10 @@ line1           lda     dy
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
+                bcs     +
                 cmp     dy          ; if a >= dy then
-                bcc     +           ;   a = a - dy
-                sec                 ;   cx--
+                bcc     ++          ;   a = a - dy
++               sec                 ;   cx--
                 sbc     dy
                 dec     cx          ; endif
 +               dec     cy          ; cy--
@@ -211,9 +275,10 @@ line2           lda     dy
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
+                bcs     +
                 cmp     dy          ; if a >= dy then
-                bcc     +           ;   a = a - dy
-                sec                 ;   cx++
+                bcc     ++          ;   a = a - dy
++               sec                 ;   cx++
                 sbc     dy
                 inc     cx          ; endif
 +               dec     cy          ; cy--
@@ -237,9 +302,10 @@ line3           lda     dx
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
+                bcs     +
                 cmp     dx          ; if a >= dx then
-                bcc     +           ;   a = a - dx
-                sec                 ;   cy--
+                bcc     ++          ;   a = a - dx
++               sec                 ;   cy--
                 sbc     dx
                 dec     cy          ; endif
 +               inc     cx          ; cx++
@@ -263,9 +329,10 @@ line4           lda     dx
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
+                bcs     +
                 cmp     dx          ; if a >= dx then
-                bcc     +           ;   a = a - dx
-                sec                 ;   cy++
+                bcc     ++          ;   a = a - dx
++               sec                 ;   cy++
                 sbc     dx
                 inc     cy          ; endif
 +               inc     cx          ; cx++
@@ -289,9 +356,10 @@ line5           lda     dy
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
+                bcs     +
                 cmp     dy          ; if a >= dy then
-                bcc     +           ;   a = a - dy
-                sec                 ;   cx++
+                bcc     ++          ;   a = a - dy
++               sec                 ;   cx++
                 sbc     dy
                 inc     cx          ; endif
 +               inc     cy          ; cy++
@@ -316,9 +384,10 @@ line6           lda     dy
 -               jsr     plot
                 clc                 ; a = a + dx
                 adc     dx
+                bcs     +
                 cmp     dy          ; if a >= dy then
-                bcc     +           ;   a = a - dy
-                sec                 ;   cx--
+                bcc     ++          ;   a = a - dy
++               sec                 ;   cx--
                 sbc     dy
                 dec     cx          ; endif
 +               inc     cy          ; cy++
@@ -342,9 +411,10 @@ line7           lda     dx
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
+                bcs     +
                 cmp     dx          ; if a >= dx then
-                bcc     +           ;   a = a - dx
-                sec                 ;   cy++
+                bcc     ++          ;   a = a - dx
++               sec                 ;   cy++
                 sbc     dx
                 inc     cy          ; endif
 +               dec     cx          ; cx--
@@ -368,9 +438,10 @@ line8           lda     dx
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
+                bcs     +
                 cmp     dx          ; if a >= dx then
-                bcc     +           ;   a = a - dx
-                sec                 ;   cy--
+                bcc     ++          ;   a = a - dx
++               sec                 ;   cy--
                 sbc     dx
                 dec     cy          ; endif
 +               dec     cx          ; cx--
@@ -387,11 +458,6 @@ init_vic
 
                 jsr     setup_color
                 jsr     clearscreen
-
-                ; Background color: 00
-                lda     #(COLOR0)
-                sta     $d020
-                sta     $d021
 
                 ; VIC mem schema
                 lda     VIC_MEM_SCHEMA
@@ -414,7 +480,14 @@ init_vic
 ; ===========================
 ; Színek beállítása
 ; ===========================
-setup_color     lda     #$00
+setup_color     
+                ; Background color
+;                lda     #(COLOR0)
+;                sta     $d020
+;                sta     $d021
+
+                ; Foreground color
+                lda     #$00
                 tax
 -               lda     #((COLOR3 << 4) + COLOR2)
                 .for i := 0, i < $400, i += $100
