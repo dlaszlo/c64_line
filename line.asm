@@ -22,6 +22,11 @@ COLOR3            = BLUE
 
 *               = $4000
 
+                lda     #$10
+                sec
+                sbc     #$20   
+
+
                 jsr     init_vic
 
 loop
@@ -251,8 +256,7 @@ line1           lda     dy
                 bcs     +           ; if a >= dy then
                 cmp     dy          ;
                 bcc     ++          ;   a = a - dy
-+               sec                 ;   cx--
-                sbc     dy
++               sbc     dy          ;   cx--
                 dec     cx          ; endif
 +               dec     cy          ; cy--
                 dey
@@ -278,8 +282,7 @@ line2           lda     dy
                 bcs     +           ; if a >= dy then
                 cmp     dy          ; 
                 bcc     ++          ;   a = a - dy
-+               sec                 ;   cx++
-                sbc     dy
++               sbc     dy          ;   cx++
                 inc     cx          ; endif
 +               dec     cy          ; cy--
                 dey
@@ -305,8 +308,7 @@ line3           lda     dx
                 bcs     +           ; if a >= dx then
                 cmp     dx          ; 
                 bcc     ++          ;   a = a - dx
-+               sec                 ;   cy--
-                sbc     dx
++               sbc     dx          ;   cy--
                 dec     cy          ; endif
 +               inc     cx          ; cx++
                 dex
@@ -332,8 +334,7 @@ line4           lda     dx
                 bcs     +           ; if a >= dx then
                 cmp     dx          ; 
                 bcc     ++          ;   a = a - dx
-+               sec                 ;   cy++
-                sbc     dx
++               sbc     dx          ;   cy++
                 inc     cy          ; endif
 +               inc     cx          ; cx++
                 dex
@@ -359,13 +360,13 @@ line5           lda     dy
                 bcs     +           ; if a >= dy then
                 cmp     dy          ;
                 bcc     ++          ;   a = a - dy
-+               sec                 ;   cx++
-                sbc     dy
++               sbc     dy          ;   cx++
                 inc     cx          ; endif
 +               inc     cy          ; cy++
                 dey
                 bne     -
                 rts
+
 
 ;
 ;\ 1|2 /
@@ -386,8 +387,7 @@ line6           lda     dy
                 bcs     +           ; if a >= dy then
                 cmp     dy          ;
                 bcc     ++          ;   a = a - dy
-+               sec                 ;   cx--
-                sbc     dy
++               sbc     dy          ;   cx--
                 dec     cx          ; endif
 +               inc     cy          ; cy++
                 dey
@@ -413,8 +413,7 @@ line7           lda     dx
                 bcs     +           ; if a >= dx then
                 cmp     dx          ;
                 bcc     ++          ;   a = a - dx
-+               sec                 ;   cy++
-                sbc     dx
++               sbc     dx          ;   cy++
                 inc     cy          ; endif
 +               dec     cx          ; cx--
                 dex
@@ -437,11 +436,10 @@ line8           lda     dx
 -               jsr     plot
                 clc                 ; a = a + dy
                 adc     dy
-                bcs     +           ; if a >= dx then
+                bcs     +       
                 cmp     dx          ;
                 bcc     ++          ;   a = a - dx
-+               sec                 ;   cy--
-                sbc     dx
++               sbc     dx          ;   cy--
                 dec     cy          ; endif
 +               dec     cx          ; cx--
                 dex
@@ -481,9 +479,9 @@ init_vic
 ; ===========================
 setup_color     
                 ; Background color
-;                lda     #(COLOR0)
-;                sta     $d020
-;                sta     $d021
+                lda     #(COLOR0)
+                sta     $d020
+                sta     $d021
 
                 ; Foreground color
                 lda     #$00
